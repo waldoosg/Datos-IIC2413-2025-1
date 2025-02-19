@@ -1,0 +1,17 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  nombre_hospedaje: MyString
+  ubicacion: MyString
+  precio_noche: 1.5
+  estrellas: 1.5
+  comodidades: MyText
+  disponibilidad: false
+
+two:
+  nombre_hospedaje: MyString
+  ubicacion: MyString
+  precio_noche: 1.5
+  estrellas: 1.5
+  comodidades: MyText
+  disponibilidad: false
