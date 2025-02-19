@@ -150,7 +150,7 @@ resenas = {
 end
 
 
-Create 100 bus
+# Create 100 bus
 añadir fecha salida o llegada
 100.times do
   Buses.create(
