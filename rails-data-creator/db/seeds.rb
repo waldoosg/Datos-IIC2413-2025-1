@@ -14,13 +14,15 @@ Habitaciones.destroy_all
 Usuario.destroy_all
 Empleado.destroy_all
 
+dominios = ['turket.com', 'waldo.com', 'marmol.com', 'outlook.com', 'viajes.cl']
+
 # Create 1000 users
 1000.times do
   Usuario.create!(
     nombre: Faker::Name.name,
     run: Faker::Number.unique.between(from: 200000, to: 30000000),
     dv: Faker::Number.number(digits: 1),
-    correo: Faker::Internet.unique.email(domain: 'viajes.cl'),
+    correo: Faker::Internet.unique.email(domain: dominios.sample),
     contrasena: Faker::Internet.password,
     telefono_contacto: Faker::Base.unique.regexify(/\+56 (9|2) \d{4} \d{4}/),
     puntos: Faker::Number.between(from: 0, to: 10000)
@@ -42,7 +44,7 @@ end
   )
 end
 
-empleados = Empleado.all
+#empleados = Empleado.all
 usuarios = Usuario.all
 
 # Create 500 agendas
@@ -59,38 +61,97 @@ agendas = Agenda.all
   Reserva.create!(
       agenda_id: agendas.sample.id,
       fecha: Faker::Date.between(from: '2025-01-01', to: '2026-12-31'),
-      monto: Faker::Number.between(from: 5000, to: 1000000),
+      monto: Faker::Number.between(from: 5, to: 1000) * 1000,
       cantidad_personas: Faker::Number.between(from: 1, to: 10)
     )
 end
 
 reservas = Reserva.all
 
+empresas_seguros = [ "HDI Seguros S.A.",
+  "Liberty Compañía de Seguros Generales S.A.",
+  "MAPFRE Compañía de Seguros Generales de Chile S.A.",
+  "Renta Nacional Compañía de Seguros Generales S.A.",
+  "Seguros Generales Suramericana S.A.",
+  "BICE Vida Compañía de Seguros S.A.",
+  "MetLife Chile Seguros de Vida S.A.",
+  "Consorcio Nacional de Seguros Vida S.A.",
+  "Confuturo S.A.",
+  "Vida Cámara S.A."]
+
+seguros_viaje = {
+  "Seguro de Asistencia Médica" => [
+    "Cobertura de gastos médicos por enfermedad o accidente",
+    "Evacuación y repatriación sanitaria",
+    "Cobertura de medicamentos recetados",
+    "Hospitalización y cirugías de emergencia"
+  ],
+  "Seguro de Cancelación de Viaje" => [
+    "Reembolso por cancelación debido a enfermedad, accidente o fallecimiento",
+    "Cobertura por cancelaciones debido a desastres naturales o disturbios",
+    "Reembolso por cancelaciones laborales imprevistas",
+    "Cobertura de penalidades por cambio de vuelo"
+  ],
+  "Seguro de Equipaje y Efectos Personales" => [
+    "Cobertura por pérdida, robo o daño de equipaje",
+    "Indemnización por retraso en la entrega de equipaje",
+    "Cobertura de artículos electrónicos bajo ciertos límites",
+    "Asistencia para reemplazo de documentos de viaje perdidos"
+  ],
+  "Seguro de Interrupción del Viaje" => [
+    "Reembolso de gastos no utilizados por interrupción del viaje",
+    "Cobertura de costos adicionales por regreso anticipado",
+    "Compensación por imprevistos que obliguen a detener el viaje"
+  ],
+  "Seguro de Responsabilidad Civil" => [
+    "Cobertura por daños a terceros durante el viaje",
+    "Gastos legales en caso de demandas civiles",
+    "Cobertura de daños a propiedades alquiladas"
+  ],
+  "Seguro por Demoras en el Viaje" => [
+    "Reembolso de gastos adicionales por retrasos en vuelos",
+    "Cobertura de alojamiento y alimentación por retrasos prolongados",
+    "Indemnización por pérdida de conexiones debido a retrasos"
+  ]
+}
+  
 # Create seguros
 500.times do
+  tipo_seguro = seguros_viaje.keys.sample
+  clausulas_seguro = seguros_viaje[tipo_seguro]
   Seguro.create(
     reserva_id: reservas.sample.id,
     usuario_id: usuarios.sample.id,
-    empresa: Faker::Company.name,
-    valor: Faker::Number.between(from: 5000, to: 100000),
-    clausula: ["No cubre enfermedades preexistentes", "No cubre accidentes de tránsito", "No cubre enfermedades contagiosas", "No cubre enfermedades crónicas", "No cubre enfermedades mentales"].sample,
-    tipo: ["Viaje", "Salud", "Vida", "Auto"].sample
+    empresa: empresas_seguros.sample,
+    valor: Faker::Number.between(from: 5, to: 100) * 1000,
+    clausula: clausulas_seguro.sample(2).join(", "),
+    tipo: tipo_seguro
   )
 end
+
+resenas = {
+  1 => ["Malo", "Pésimo", "No vuelvo más", "Muy insatisfecho", "Completamente decepcionado"],
+  2 => ["Regular", "No lo recomendaría", "Hubo varios problemas", "No me convenció del todo"],
+  3 => ["Aceptable", "Servicio regular", "Cumplió con mis expectativas, pero sin destacar", "Podría mejorar"],
+  4 => ["Bueno", "Me atendieron bien", "Satisfecho, pero hay detalles por mejorar", "Buena experiencia en general"],
+  5 => ["Excelente", "Superó mis expectativas", "Muy satisfecho", "Sin duda volveré", "Servicio de primera"]
+}
 
 # Create 100 reviews
 10000.times do
+  estrellas = Faker::Number.between(from: 1, to: 5)
+  comentario = resenas[Faker::Number.between(from: 1, to: 5)]
   Review.create(
     reserva_id: reservas.sample.id,
     usuario_id: usuarios.sample.id,
-    estrellas: Faker::Number.between(from: 1, to: 5),
-    descripcion: ["Excelente servicio", "Muy buena atención", "Muy buen precio", "Muy buen lugar", "Muy buen panorama", "Mal servicio", "Lo odio"].sample
+    estrellas: estrellas,
+    descripcion: comentario.sample
   )
 end
 
 
-# Create 100 bus
-# añadir fecha salida o llegada
+Create 100 bus
+añadir fecha salida o llegada
 100.times do
   Buses.create(
     reserva_id: reservas.sample.id,
