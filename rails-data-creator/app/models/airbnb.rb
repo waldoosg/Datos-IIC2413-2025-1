@@ -1,0 +1,2 @@
+class Airbnb < Hospedaje
+end

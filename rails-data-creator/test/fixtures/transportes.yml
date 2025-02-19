@@ -1,0 +1,21 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  id_empleado: 1
+  numero_viaje: 1
+  lugar_origen: MyString
+  lugar_llegada: MyString
+  capacidad: 1
+  tiempo_estimado: 1
+  precio_asiento: 1.5
+  empresa: MyString
+
+two:
+  id_empleado: 1
+  numero_viaje: 1
+  lugar_origen: MyString
+  lugar_llegada: MyString
+  capacidad: 1
+  tiempo_estimado: 1
+  precio_asiento: 1.5
+  empresa: MyString

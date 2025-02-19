@@ -1,0 +1,22 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: 5
+  username: tomasketterer
+  password: Tomas27052002
+  host: localhost
+
+development:
+  <<: *default
+  database: data_creator_development
+
+test:
+  <<: *default
+  database: data_creator_test
+
+production:
+  <<: *default
+  database: data_creator_production
+  username: tomasketterer
+  password: Tomas27052002
+  host: <%= ENV["DB_HOST"] || "localhost" %>

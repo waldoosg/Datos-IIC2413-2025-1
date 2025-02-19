@@ -1,0 +1,21 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  empresa: MyString
+  nombre_panorama: MyString
+  descripcion: MyText
+  ubicacion: MyString
+  duracion: 1
+  precio_persona: 1.5
+  capacidad: 1
+  restricciones: MyText
+
+two:
+  empresa: MyString
+  nombre_panorama: MyString
+  descripcion: MyText
+  ubicacion: MyString
+  duracion: 1
+  precio_persona: 1.5
+  capacidad: 1
+  restricciones: MyText

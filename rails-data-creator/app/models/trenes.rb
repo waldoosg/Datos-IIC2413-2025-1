@@ -1,0 +1,2 @@
+class Trenes < Transporte
+end

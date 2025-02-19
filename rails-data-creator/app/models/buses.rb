@@ -1,0 +1,2 @@
+class Buses < Transporte
+end
