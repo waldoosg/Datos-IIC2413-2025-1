@@ -2,6 +2,7 @@ require 'faker'
 
 Faker::Config.locale = 'es'
 # Erase all data
+Habitaciones.destroy_all
 Seguro.destroy_all
 Review.destroy_all
 Transporte.destroy_all
@@ -10,7 +11,6 @@ Participante.destroy_all
 Panorama.destroy_all
 Reserva.destroy_all
 Agenda.destroy_all
-Habitaciones.destroy_all
 Usuario.destroy_all
 Empleado.destroy_all
 
@@ -149,29 +149,35 @@ resenas = {
   )
 end
 
+empresas_buses = [
+  "Turbus", "Pullman Bus", "Condor Bus", "EME Bus", "JetSur",
+  "Buses Romani", "Buses Nilahue", "Buses Ahumada", "Buses Bio Bio",
+  "Flecha Bus", "Chevallier", "Andesmar", "Via Bariloche", "El Rápido Internacional",
+  "Plusmar", "Crucero del Norte", "ADO", "Estrella Roja", "Primera Plus",
+  "ETN Turistar", "Omnibus de México", "Futura", "Alsa", "Avanza",
+  "Socibus", "Monbus", "Damas", "Greyhound", "Megabus",
+  "FlixBus", "BoltBus"
+]
 
 # Create 100 bus
 # añadir fecha salida o llegada
 100.times do
   tiempo_estimado = Faker::Number.between(from: 120, to: 720)
-  precio_asiento = Faker::Number.between(from: 5000, to: 50000)
-  tipo = ["Normal", "Semi-cama", "Cama"].sample
+  precio_asiento = Faker::Number.between(from: 5, to: 50) * 1000
+  tipo = "Normal"
 
   if tiempo_estimado > 600
-    precio_asiento = Faker::Number.between(from: 50000, to: 200000)
+    precio_asiento = Faker::Number.between(from: 50, to: 200) * 1000
     tipo = "Cama"
   elsif tiempo_estimado > 480
-    precio_asiento = Faker::Number.between(from: 40000, to: 150000)
+    precio_asiento = Faker::Number.between(from: 40, to: 150) * 1000
     tipo = ["Semi-cama", "Cama"].sample
   elsif tiempo_estimado > 360
-    precio_asiento = Faker::Number.between(from: 30000, to: 100000)
+    precio_asiento = Faker::Number.between(from: 30, to: 100) * 1000
     tipo = ["Semi-cama", "Cama"].sample
   elsif tiempo_estimado > 240
-    precio_asiento = Faker::Number.between(from: 20000, to: 80000)
+    precio_asiento = Faker::Number.between(from: 20, to: 80) * 1000
     tipo = ["Normal", "Semi-cama"].sample
-  elsif tiempo_estimado > 120
-    precio_asiento = Faker::Number.between(from: 10000, to: 50000)
-    tipo = "Normal"
   end
 
   Buses.create(
@@ -180,35 +186,46 @@ end
     numero_viaje: Faker::Number.unique.between(from: 1, to: 100000),
     lugar_origen: Faker::Address.city,
     lugar_llegada: Faker::Address.city,
-    capacidad: Faker::Number.between(from: 1, to: 100),
+    capacidad: Faker::Number.between(from: 30, to: 50),
     tiempo_estimado: tiempo_estimado,
     precio_asiento: precio_asiento,
-    empresa: Faker::Company.name,
+    empresa: empresas_buses.sample,
     tipo: tipo,
     comodidades: ["Wifi", "TV", "Aire acondicionado", "Calefacción", "Baño", "Comida", "Agua", "Asientos reclinables"].sample(3)
   )
 end
 
+empresas_aerolineas = [
+  "American Airlines", "Delta Air Lines", "United Airlines", "Southwest Airlines",
+  "JetBlue", "Alaska Airlines", "Spirit Airlines", "Frontier Airlines",
+  "British Airways", "Lufthansa", "Air France", "KLM", "Iberia",
+  "LATAM Airlines", "Avianca", "Copa Airlines", "Aeroméxico",
+  "Qatar Airways", "Emirates", "Etihad Airways", "Turkish Airlines",
+  "Singapore Airlines", "Japan Airlines", "All Nippon Airways (ANA)",
+  "Qantas", "Air New Zealand", "Ethiopian Airlines", "Ryanair",
+  "EasyJet", "Vueling", "Wizz Air", "Air Canada", "WestJet"
+]
+
 # Create 100 avion
 100.times do
   tiempo_estimado = Faker::Number.between(from: 120, to: 4320)
-  precio_asiento = Faker::Number.between(from: 5000, to: 200000)
-  clase = ["Primera clase", "Clase ejecutiva", "Clase económica"].sample
+  precio_asiento = Faker::Number.between(from: 5, to: 200) * 1000
+  clase = ["Clase ejecutiva", "Clase económica"].sample
 
   if tiempo_estimado > 3600
-    precio_asiento = Faker::Number.between(from: 150000, to: 500000)
+    precio_asiento = Faker::Number.between(from: 150, to: 500) * 1000
     clase = "Primera clase"
   elsif tiempo_estimado > 2880
-    precio_asiento = Faker::Number.between(from: 100000, to: 400000)
+    precio_asiento = Faker::Number.between(from: 100, to: 400) * 1000
     clase = ["Primera clase", "Clase ejecutiva"].sample
   elsif tiempo_estimado > 2160
-    precio_asiento = Faker::Number.between(from: 80000, to: 300000)
+    precio_asiento = Faker::Number.between(from: 80, to: 300) * 1000
     clase = ["Primera clase", "Clase ejecutiva"].sample
   elsif tiempo_estimado > 1440
-    precio_asiento = Faker::Number.between(from: 50000, to: 200000)
+    precio_asiento = Faker::Number.between(from: 50, to: 200) * 1000
     clase = ["Clase ejecutiva", "Clase económica"].sample
   elsif tiempo_estimado > 720
-    precio_asiento = Faker::Number.between(from: 30000, to: 150000)
+    precio_asiento = Faker::Number.between(from: 30, to: 150) * 1000
     clase = "Clase económica"
   end
 
@@ -221,33 +238,44 @@ end
     capacidad: Faker::Number.between(from: 1, to: 100),
     tiempo_estimado: tiempo_estimado,
     precio_asiento: precio_asiento,
-    empresa: Faker::Company.name,
+    empresa: empresas_aerolineas.sample,
     clase: clase,
     escalas: Array.new(Faker::Number.between(from: 0, to: 5)) { Faker::Address.city }
   )
 end
 
+empresas_trenes = [
+  "Amtrak", "Eurostar", "Thalys", "TGV (SNCF)", "Renfe", "AVE", 
+  "Deutsche Bahn (DB)", "Trenitalia", "Italo", "ÖBB (Austria)", 
+  "SBB (Suiza)", "Nederlandse Spoorwegen (NS)", "EuroCity", 
+  "Shinkansen (Japón)", "JR East", "JR West", "JR Central", 
+  "Indian Railways", "China Railway", "KTX (Corea del Sur)", 
+  "Via Rail (Canadá)", "Brightline (EE.UU.)", "Rocky Mountaineer", 
+  "Great Western Railway (GWR)", "Virgin Trains", "South Western Railway",
+  "ScotRail", "TransPennine Express", "West Midlands Trains", 
+  "LNER (London North Eastern Railway)"
+]
+
 # Create 100 tren
 100.times do
   tiempo_estimado = Faker::Number.between(from: 120, to: 4320)
-  precio_asiento = Faker::Number.between(from: 5000, to: 200000)
-  comodidades = ["Wifi", "TV", "Aire acondicionado", "Calefacción", "Baño", "Comida", "Agua", "Asientos reclinables"].sample(3)
+  precio_asiento = Faker::Number.between(from: 5, to: 200) * 1000
 
   if tiempo_estimado > 3600
-    precio_asiento = Faker::Number.between(from: 150000, to: 500000)
-    comodidades = ["Wifi", "TV", "Aire acondicionado", "Calefacción", "Baño", "Comida", "Agua", "Asientos reclinables"]
+    precio_asiento = Faker::Number.between(from: 150, to: 500) * 1000
+    comodidades = ["Wifi", "TV", "Aire acondicionado", "Calefacción", "Baño", "Comida", "Agua", "Asientos reclinables"].sample(7)
   elsif tiempo_estimado > 2880
-    precio_asiento = Faker::Number.between(from: 100000, to: 400000)
-    comodidades = ["Wifi", "TV", "Aire acondicionado", "Calefacción", "Baño", "Comida", "Agua", "Asientos reclinables"]
+    precio_asiento = Faker::Number.between(from: 100, to: 400) * 1000
+    comodidades = ["Wifi", "TV", "Aire acondicionado", "Calefacción", "Baño", "Comida", "Agua", "Asientos reclinables"].sample(6)
   elsif tiempo_estimado > 2160
-    precio_asiento = Faker::Number.between(from: 80000, to: 300000)
-    comodidades = ["Wifi", "TV", "Aire acondicionado", "Calefacción", "Baño", "Comida", "Agua", "Asientos reclinables"]
+    precio_asiento = Faker::Number.between(from: 80, to: 300) * 1000
+    comodidades = ["Wifi", "TV", "Aire acondicionado", "Calefacción", "Baño", "Comida", "Agua", "Asientos reclinables"].sample(5)
   elsif tiempo_estimado > 1440
-    precio_asiento = Faker::Number.between(from: 50000, to: 200000)
-    comodidades = ["Wifi", "TV", "Aire acondicionado", "Calefacción", "Baño", "Comida", "Agua", "Asientos reclinables"]
+    precio_asiento = Faker::Number.between(from: 50, to: 200) * 1000
+    comodidades = ["Wifi", "TV", "Aire acondicionado", "Calefacción", "Baño", "Comida", "Agua", "Asientos reclinables"].sample(4)
   elsif tiempo_estimado > 720
-    precio_asiento = Faker::Number.between(from: 30000, to: 150000)
-    comodidades = ["Wifi", "TV", "Aire acondicionado", "Calefacción", "Baño", "Comida", "Agua", "Asientos reclinables"]
+    precio_asiento = Faker::Number.between(from: 30, to: 150) * 1000
+    comodidades = ["Wifi", "TV", "Aire acondicionado", "Calefacción", "Baño", "Comida", "Agua", "Asientos reclinables"].sample(3)
   end
 
   Trenes.create(
@@ -259,23 +287,33 @@ end
     capacidad: Faker::Number.between(from: 1, to: 100),
     tiempo_estimado: tiempo_estimado,
     precio_asiento: precio_asiento,
-    empresa: Faker::Company.name,
+    empresa: empresas_trenes.sample,
     paradas: Array.new(Faker::Number.between(from: 0, to: 5)) { Faker::Address.city },
     comodidades: comodidades
   )
 end
 
+empresas_turismo = [
+  "TUI Group", "Expedia Group", "Booking Holdings", "Tripadvisor", "CWT",
+  "American Express Global Business Travel", "Flight Centre Travel Group", 
+  "Travel Leaders Group", "Apple Leisure Group", "BCD Travel", "Thomas Cook",
+  "Kuoni", "Abercrombie & Kent", "G Adventures", "Intrepid Travel", 
+  "Contiki", "Trafalgar", "Insight Vacations", "Globus", "Exodus Travels", 
+  "EF Tours", "National Geographic Expeditions", "Viator", "GetYourGuide",
+  "Klook", "Civitatis", "Gray Line", "Secret Escapes", "Luxury Escapes", 
+  "Hays Travel"
+]
 # Create 1000 Panoramas
 1000.times do
   Panorama.create(
     reserva_id: reservas.sample.id,
-    empresa: Faker::Company.name,
+    empresa: empresas_turismo.sample,
     nombre_panorama: ["Tour", "Paseo", "Excursión", "Visita", "Aventura"].sample,
     descripcion: ["Disfruta de un día en la naturaleza", "Conoce la historia de la ciudad", "Aventúrate en la montaña", "Descubre la gastronomía local", "Relájate en la playa"].sample,
     ubicacion: Faker::Address.city,
     duracion: Faker::Number.between(from: 1, to: 7),
-    precio_persona: Faker::Number.between(from: 5000, to: 100000),
-    capacidad: Faker::Number.between(from: 1, to: 100),
+    precio_persona: Faker::Number.between(from: 5, to: 100) * 1000,
+    capacidad: Faker::Number.between(from: 1, to: 50),
     restricciones: ["No apto para menores de 18 años", "No apto para personas con movilidad reducida", "No apto para personas con problemas de salud", "No apto para personas con problemas de movilidad"].sample
   )
 end
@@ -285,27 +323,41 @@ panoramas = Panorama.all;
 10000.times do
   Participante.create(
     panorama_id: panoramas.sample.id,
-    nombre_participante: Faker::Name.name,
+    nombre_participante: usuarios.sample.nombre,
   )
 end
+
+empresas_hoteleras = [
+  "Marriott International", "Hilton Hotels & Resorts", "Hyatt Hotels Corporation",
+  "InterContinental Hotels Group (IHG)", "Wyndham Hotels & Resorts",
+  "AccorHotels", "Choice Hotels International", "Radisson Hotel Group",
+  "Four Seasons Hotels & Resorts", "Best Western Hotels & Resorts",
+  "Melia Hotels International", "NH Hotel Group", "Rosewood Hotels & Resorts",
+  "Fairmont Hotels & Resorts", "The Ritz-Carlton", "Mandarin Oriental",
+  "Shangri-La Hotels and Resorts", "Belmond", "Loews Hotels",
+  "Omni Hotels & Resorts", "Drury Hotels", "Red Lion Hotels Corporation",
+  "Sonesta International Hotels", "MGM Resorts International",
+  "Caesars Entertainment", "Hard Rock Hotels", "Kimpton Hotels & Restaurants",
+  "Aman Resorts", "Six Senses Hotels Resorts Spas"
+]
 
 # Create 2000 Hospedajes
 2000.times do
   Hoteles.create(
     reserva_id: reservas.sample.id,
-    nombre_hospedaje: Faker::Company.name,
+    nombre_hospedaje: empresas_hoteleras.sample,
     ubicacion: Faker::Address.city,
-    precio_noche: Faker::Number.between(from: 5000, to: 150000),
+    precio_noche: Faker::Number.between(from: 5, to: 150) * 1000,
     estrellas: Faker::Number.between(from: 1, to: 5),
     comodidades: ["Wifi", "TV", "Aire acondicionado", "Calefacción", "Baño", "Comida", "Agua", "Asientos reclinables", "Piscina", "Gimnasio", "Spa", "Servicio a la habitación"].sample(5),
-    disponibilidad: Faker::Boolean.boolean,
+    disponibilidad: [true, false].sample,
     politicas: ["No se permiten mascotas", "No se permite fumar", "No se permiten fiestas", "No se permiten visitas", "Check-in después de las 3 PM", "Check-out antes de las 11 AM", "Silencio después de las 10 PM"].sample(3)
   )
 end
 
 # Create 2000 Airbnb
 2000.times do
-  precio_noche = Faker::Number.between(from: 5000, to: 150000)
+  precio_noche = Faker::Number.between(from: 5, to: 150) * 1000
   piezas = Faker::Number.between(from: 1, to: 6)
   camas = Faker::Number.between(from: 1, to: 6)
   banos = Faker::Number.between(from: 1, to: 4)
@@ -331,14 +383,15 @@ end
   comodidades = ["Wifi", "TV", "Aire acondicionado", "Calefacción", "Baño", "Comida", "Agua", "Asientos reclinables", "Piscina", "Gimnasio", "Spa", "Servicio a la habitación", "Jacuzzi", "Balcón", "Vista al mar", "Chimenea"].sample(5)
   descripcion = ["Disfruta de una estadía en el corazón de la ciudad", "Relájate en un lugar tranquilo y acogedor", "Descubre la historia de la ciudad desde tu ventana", "Aventúrate en la naturaleza y descansa en un lugar cómodo", "Experimenta el lujo y la comodidad en este alojamiento", "Perfecto para familias y grupos grandes", "Ideal para una escapada romántica", "Ubicación céntrica con fácil acceso a atracciones turísticas"].sample
 
+  ciudad = Faker::Address.city
   Airbnb.create(
     reserva_id: reservas.sample.id,
-    nombre_hospedaje: Faker::Company.name,
-    ubicacion: Faker::Address.city,
+    nombre_hospedaje: ["Casa", "Departamento", "Loft", "Cabaña", "Villa", "Estudio", "Habitación", "Hostal", "Residencia", "Suite"].sample + " en " + ciudad,
+    ubicacion: ciudad,
     precio_noche: precio_noche,
     estrellas: Faker::Number.between(from: 1, to: 5),
     comodidades: comodidades,
-    disponibilidad: Faker::Boolean.boolean,
+    disponibilidad: [true, false].sample,
     nombre_anfitrion: Faker::Name.name,
     contacto_anfitrion: Faker::Base.regexify(/\+56 (9|2) \d{4} \d{4}/),
     descripcion: descripcion,
