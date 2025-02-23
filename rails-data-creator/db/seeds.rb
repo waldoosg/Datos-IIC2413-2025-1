@@ -17,7 +17,7 @@ Empleado.destroy_all
 dominios = ['turket.com', 'waldo.com', 'marmol.com', 'outlook.com', 'viajes.cl']
 
 # Create 1000 users
-1000.times do
+1500.times do
   Usuario.create!(
     nombre: Faker::Name.name,
     run: Faker::Number.unique.between(from: 200000, to: 30000000),
@@ -30,7 +30,7 @@ dominios = ['turket.com', 'waldo.com', 'marmol.com', 'outlook.com', 'viajes.cl']
 end
 
 # Create 500 employees
-500.times do
+200.times do
   Empleado.create!(
     nombre: Faker::Name.name,
     run: Faker::Number.unique.between(from: 1, to: 30000000),
@@ -116,7 +116,7 @@ seguros_viaje = {
 }
   
 # Create seguros
-500.times do
+400.times do
   tipo_seguro = seguros_viaje.keys.sample
   clausulas_seguro = seguros_viaje[tipo_seguro]
   Seguro.create(
@@ -138,7 +138,7 @@ resenas = {
 }
 
 # Create 100 reviews
-10000.times do
+5000.times do
   estrellas = Faker::Number.between(from: 1, to: 5)
   comentario = resenas[Faker::Number.between(from: 1, to: 5)]
   Review.create(
@@ -304,7 +304,7 @@ empresas_turismo = [
   "Hays Travel"
 ]
 # Create 1000 Panoramas
-1000.times do
+500.times do
   Panorama.create(
     reserva_id: reservas.sample.id,
     empresa: empresas_turismo.sample,
@@ -320,7 +320,7 @@ end
 
 panoramas = Panorama.all;
 # Create 10000 participantes
-10000.times do
+5000.times do
   Participante.create(
     panorama_id: panoramas.sample.id,
     nombre_participante: usuarios.sample.nombre,
@@ -342,7 +342,7 @@ empresas_hoteleras = [
 ]
 
 # Create 2000 Hospedajes
-2000.times do
+100.times do
   Hoteles.create(
     reserva_id: reservas.sample.id,
     nombre_hospedaje: empresas_hoteleras.sample,
@@ -404,7 +404,7 @@ end
 hoteles = Hoteles.all;
 
 # Create 40000 habitaciones
-40000.times do
+2000.times do
   Habitaciones.create(
     hotel_id: hoteles.sample.id,
     numero_habitacion: Faker::Number.unique.between(from: 1, to: 50000),
