@@ -17,7 +17,7 @@ Empleado.destroy_all
 dominios = ['turket.com', 'waldo.com', 'marmol.com', 'outlook.com', 'viajes.cl']
 
 # Create 1000 users
-1500.times do
+973.times do
   Usuario.create!(
     nombre: Faker::Name.name,
     run: Faker::Number.unique.between(from: 200000, to: 30000000),
@@ -30,7 +30,7 @@ dominios = ['turket.com', 'waldo.com', 'marmol.com', 'outlook.com', 'viajes.cl']
 end
 
 # Create 500 employees
-200.times do
+284.times do
   Empleado.create!(
     nombre: Faker::Name.name,
     run: Faker::Number.unique.between(from: 1, to: 30000000),
@@ -48,7 +48,7 @@ empleados = Empleado.all
 usuarios = Usuario.all
 
 # Create 500 agendas
-500.times do
+1614.times do
   Agenda.create!(
     etiqueta: ["Vacaciones", "Cena de Trabajo", "Salida con Familia", "Salida con Amigos", "Aniversario"].sample,
     usuario_id: usuarios.sample.id
@@ -57,10 +57,10 @@ end
 
 agendas = Agenda.all
 
-4000.times do
+3275.times do
   Reserva.create!(
       agenda_id: agendas.sample.id,
-      fecha: Faker::Date.between(from: '2025-01-01', to: '2026-12-31'),
+      fecha: Faker::Date.between(from: '2025-01-01', to: '2026-12-31').strftime('%d-%m-%Y'),
       monto: Faker::Number.between(from: 5, to: 1000) * 1000,
       cantidad_personas: Faker::Number.between(from: 1, to: 10)
     )
@@ -116,7 +116,7 @@ seguros_viaje = {
 }
   
 # Create seguros
-400.times do
+0.times do
   tipo_seguro = seguros_viaje.keys.sample
   clausulas_seguro = seguros_viaje[tipo_seguro]
   Seguro.create(
@@ -138,7 +138,7 @@ resenas = {
 }
 
 # Create 100 reviews
-5000.times do
+0.times do
   estrellas = Faker::Number.between(from: 1, to: 5)
   comentario = resenas[Faker::Number.between(from: 1, to: 5)]
   Review.create(
@@ -161,7 +161,7 @@ empresas_buses = [
 
 # Create 100 bus
 # añadir fecha salida o llegada
-100.times do
+164.times do
   tiempo_estimado = Faker::Number.between(from: 120, to: 720)
   precio_asiento = Faker::Number.between(from: 5, to: 50) * 1000
   tipo = "Normal"
@@ -207,7 +207,7 @@ empresas_aerolineas = [
 ]
 
 # Create 100 avion
-100.times do
+96.times do
   tiempo_estimado = Faker::Number.between(from: 120, to: 4320)
   precio_asiento = Faker::Number.between(from: 5, to: 200) * 1000
   clase = ["Clase ejecutiva", "Clase económica"].sample
@@ -257,7 +257,7 @@ empresas_trenes = [
 ]
 
 # Create 100 tren
-100.times do
+124.times do
   tiempo_estimado = Faker::Number.between(from: 120, to: 4320)
   precio_asiento = Faker::Number.between(from: 5, to: 200) * 1000
 
@@ -304,7 +304,7 @@ empresas_turismo = [
   "Hays Travel"
 ]
 # Create 1000 Panoramas
-500.times do
+0.times do
   Panorama.create(
     reserva_id: reservas.sample.id,
     empresa: empresas_turismo.sample,
@@ -320,7 +320,7 @@ end
 
 panoramas = Panorama.all;
 # Create 10000 participantes
-5000.times do
+0.times do
   Participante.create(
     panorama_id: panoramas.sample.id,
     nombre_participante: usuarios.sample.nombre,
@@ -342,7 +342,7 @@ empresas_hoteleras = [
 ]
 
 # Create 2000 Hospedajes
-100.times do
+0.times do
   Hoteles.create(
     reserva_id: reservas.sample.id,
     nombre_hospedaje: empresas_hoteleras.sample,
@@ -356,7 +356,7 @@ empresas_hoteleras = [
 end
 
 # Create 2000 Airbnb
-2000.times do
+0.times do
   precio_noche = Faker::Number.between(from: 5, to: 150) * 1000
   piezas = Faker::Number.between(from: 1, to: 6)
   camas = Faker::Number.between(from: 1, to: 6)
@@ -404,7 +404,7 @@ end
 hoteles = Hoteles.all;
 
 # Create 40000 habitaciones
-2000.times do
+0.times do
   Habitaciones.create(
     hotel_id: hoteles.sample.id,
     numero_habitacion: Faker::Number.unique.between(from: 1, to: 50000),
