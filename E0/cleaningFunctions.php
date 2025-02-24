@@ -1,6 +1,5 @@
 <?php
 function cleanCsvLineFromUsuariosCsv($line) {
-  $line = explode(",", $line);
   // 0. Nombre
   // 1. Run
   // 2. Dv
@@ -42,7 +41,6 @@ function cleanCsvLineFromUsuariosCsv($line) {
 }
 
 function cleanCsvLineFromEmpleadosCsv($line) {
-  $line = explode(",", $line);
   // 0. Nombre
   // 1. Run
   // 2. Dv
