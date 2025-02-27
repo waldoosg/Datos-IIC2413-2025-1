@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_02_18_204008) do
+ActiveRecord::Schema[8.0].define(version: 2025_02_27_032916) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -109,10 +109,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_18_204008) do
   create_table "habitaciones", force: :cascade do |t|
     t.integer "numero_habitacion"
     t.string "tipo", default: "Sencilla", null: false
-    t.bigint "hotel_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["hotel_id"], name: "index_habitaciones_on_hotel_id"
+    t.bigint "hotel_id", null: false
   end
 
   create_table "hospedajes", force: :cascade do |t|
@@ -237,7 +236,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_18_204008) do
     t.date "fecha_panorama"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["agenda_id"], name: "index_reservas_on_agenda_id"
     t.index ["empleado_id"], name: "index_reservas_on_empleado_id"
   end
 
@@ -335,13 +333,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_18_204008) do
   add_foreign_key "buses", "reservas", column: "reservas_id"
   add_foreign_key "buses", "transportes", column: "transportes_id"
   add_foreign_key "empleados", "personas", column: "personas_id"
-  add_foreign_key "habitaciones", "hoteles", column: "hotel_id"
   add_foreign_key "hospedajes", "reservas", column: "reservas_id"
   add_foreign_key "hoteles", "hospedajes", column: "hospedajes_id"
   add_foreign_key "hoteles", "reservas", column: "reservas_id"
   add_foreign_key "panoramas", "reservas", column: "reservas_id"
   add_foreign_key "participantes", "panoramas"
-  add_foreign_key "reservas", "agendas"
   add_foreign_key "reservas", "empleados"
   add_foreign_key "reviews", "reservas"
   add_foreign_key "reviews", "usuarios"
