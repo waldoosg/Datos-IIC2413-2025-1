@@ -9,10 +9,10 @@ if (($handle = fopen($inputFile, 'r')) !== FALSE) {
     // Loop through each line in the CSV file
     while (($data = fgetcsv($handle, 1000, ',')) !== FALSE) {
         // Check if the 5th element exists
-        if (isset($data[5])) {
+        if (isset($data[6])) {
             // Remove the first character from the 5th element if it is a backslash
-            if ($data[5][0] === '\\') {
-                $data[5] = substr($data[5], 1);
+            if ($data[6][0] === '\\') {
+                $data[6] = substr($data[6], 1);
             }
         }
         

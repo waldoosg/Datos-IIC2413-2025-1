@@ -4,7 +4,7 @@ $dir = new DirectoryIterator($prefix);
 require_once 'cleaningFunctions.php';
 
 $lineas_cambiadas = 0;
-
+$lineas_sin_cambios = 0;
 foreach ($dir as $fileinfo) {
     if ($fileinfo->isFile() && $fileinfo->getFilename() == 'EmpleadosRescatados_dirty.csv') {
         $filepath = $fileinfo->getPathname();
@@ -20,15 +20,18 @@ foreach ($dir as $fileinfo) {
             fputcsv($cleanedCsvfile, $cleanedLine);
             if ($line != $cleanedLine) {
                 $lineas_cambiadas++;
+            } else {
+                $lineas_sin_cambios++;
             }
         }
         print_r("Las lineas cambiadas fueron: " . $lineas_cambiadas . "\n");
-
+        print_r("Las lineas sin cambios fueron: " . $lineas_sin_cambios . "\n");
         fclose($csvfile);
         fclose($cleanedCsvfile);
     }
 }
 $lineas_cambiadas = 0;
+$lineas_sin_cambios = 0;
 foreach ($dir as $fileinfo) {
     if ($fileinfo->isFile() && $fileinfo->getFilename() == 'UsuariosRescatados_dirty.csv') {
         $filepath = $fileinfo->getPathname();
@@ -45,10 +48,13 @@ foreach ($dir as $fileinfo) {
             fputcsv($cleanedCsvfile, $cleanedLine);
             if ($line != $cleanedLine) {
                 $lineas_cambiadas++;
+            } else {
+                $lineas_sin_cambios++;
             }
         }
 
         print_r("Las lineas cambiadas fueron: " . $lineas_cambiadas . "\n");
+        print_r("Las lineas sin cambios fueron: " . $lineas_sin_cambios . "\n");
         fclose($csvfile);
         fclose($cleanedCsvfile);
     }

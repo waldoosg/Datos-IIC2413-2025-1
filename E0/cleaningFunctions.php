@@ -1,106 +1,74 @@
 <?php
 function cleanCsvLineFromUsuariosCsv($line) {
-  // 0. Nombre
-  // 1. Run
-  // 2. Dv
-  // 3. Correo
-  // 4. Contrasena
-  // 5. Telefono contacto
-  // 6. Puntos
-  // 7. Etiqueta
-  // 8. Fecha
-  // 9. Monto
-  // 10. Cantidad personas
+    // Limpiar número de teléfono
+    $line[6] = str_replace("-", " ", $line[6]);
+    if (!preg_match('/^\+569 \d{4} \d{4}$/', $line[6])) {
+        $line[6] = null;
+    }
 
-  // Limpiar número telefono (tiene formato +569 XXXX XXXX)
-  if (!preg_match('/^\+569 \d{4} \d{4}$/', $line[6])) {
-    $line[7] = null;
-  }
+    // Limpiar correo
+    $line[3] = str_replace('@@', '@', $line[3]);
+    if (!preg_match('/^[a-zA-Z0-9._%+-]{4,}@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/', $line[3])) {
+        $line[3] = null;
+    }
+    if (strpos($line[3], ".ceele") !== false) {
+        $line[3] = null;
+    }
 
-  // Limpiar correo (alfanumérico, mínimo de longitud de 4, tiene que tener @, sin espacios y .com/.cl/etc)
-  if (!preg_match('/^[a-zA-Z0-9._%+-]{4,}@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/', $line[4])) {
-    $line[3] = null;
-  }
+    // Limpiar fecha
+    $line[9] = str_replace("/", "-", $line[9]);
+    if (!preg_match('/^\d{2}-\d{2}-\d{4}$/', $line[9])) {
+        $line[9] = null;
+    }
 
-  // Limpiar fecha (solo puede tener numeros y guiones, tiene que ser formato Date, sin letras)
-  if (!preg_match('/^\d{2}-\d{2}-\d{4}$/', $line[8])) {
-    $line[8] = null;
-  }
+    // Limpiar monto
+    $line[10] = abs((int)$line[10]);
 
-  // Limpiar monto (no puede ser negativo)
-  if ($line[9] < 0) {
-    $line[9] = abs($line[9]);
-  }
-
-  // Limpiar run (no puede ser menor a 200000 ni mayor a 30000000, tiene que ser númerico y sin puntos, si los tiene se sacan)
-  if (!is_numeric($line[1]) || $line[1] < 200000 || $line[1] > 30000000) {
-    $line[1] = null;
-  }
-
-  return $line;
+    // Limpiar RUN
+    $line[1] = preg_replace('/[^0-9kK]/', '', $line[1]);
+    if (!is_numeric($line[1]) || $line[1] < 200000 || $line[1] > 30000000) {
+        $line[1] = null;
+    }
+    
+    return $line;
 }
 
 function cleanCsvLineFromEmpleadosCsv($line) {
-  // 0. Nombre
-  // 1. Run
-  // 2. Dv
-  // 3. Correo
-  // 4. Contrasena
-  // 5. Telefono contacto
-  // 6. Jornada
-  // 7. Isapre
-  // 8. Contrato
-  // 9. Fecha
-  // 10. Monto
-  // 11. Cantidad personas
-  // 12. Numero viaje
-  // 13. Lugar origen
-  // 14. Lugar llegada
-  // 15. Capacidad
-  // 16. Tiempo estimado
-  // 17. Precio asiento
-  // 18. Empresa
-  // 19. Tipo de bus
-  // 20. Comodidades
-  // 21. Escalas
-  // 22. Clase
-  // 23. Paradas
+    // Limpiar número de teléfono
+    $line[6] = str_replace("-", " ", $line[6]);
+    if (!preg_match('/^56 \d \d{4} \d{4}$/', $line[6])) {
+        $line[6] = null;
+    }
 
-  // Limpiar número telefono (tiene formato 56 X XXXX XXXX)
-  if (!preg_match('/^56 \d \d{4} \d{4}$/', $line[5])) {
-    $line[5] = null;
-  }
+    // Limpiar correo
+    $line[3] = str_replace('@@', '@', $line[3]);
+    if (!preg_match('/^[a-zA-Z0-9._%+-]{4,}@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/', $line[3])) {
+        $line[3] = null;
+    }
+    if (strpos($line[3], ".ceele") !== false) {
+        $line[3] = null;
+    }
 
-  // Limpiar correo (alfanumérico, mínimo de longitud de 4, tiene que tener @, sin espacios y .com/.cl/etc)
-  if (!preg_match('/^[a-zA-Z0-9._%+-]{4,}@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/', $line[3])) {
-    $line[3] = null;
-  }
+    // Limpiar fecha
+    $line[10] = str_replace("/", "-", $line[10]);
+    print($line[10] . "\n");
+    if (!preg_match('/^\d{2}-\d{2}-\d{4}$/', $line[10])) {
+        $line[10] = null;
+    }
 
-  // Limpiar fecha (solo puede tener numeros y guiones, tiene que ser formato Date, sin letras)
-  if (!preg_match('/^\d{2}-\d{2}-\d{4}$/', $line[9])) {
-    $line[9] = null;
-  }
+    // Limpiar monto
+    $line[11] = abs((int)$line[11]);
 
-  // Limpiar monto (no puede ser negativo)
-  if ($line[10] < 0) {
-    $line[10] = abs($line[10]);
-  }
+    // Limpiar RUN
+    $line[1] = preg_replace('/[^0-9kK]/', '', $line[1]);
+    if (!is_numeric($line[1]) || $line[1] < 200000 || $line[1] > 30000000) {
+        $line[1] = null;
+    }
 
-  // Limpiar run (no puede ser menor a 200000 ni mayor a 30000000, tiene que ser númerico y sin puntos, si los tiene se sacan)
-  if (!is_numeric($line[1]) || $line[1] < 200000 || $line[1] > 30000000) {
-    $line[1] = null;
-  }
-
-  // Limpiar lugar origen (la ciudad y pais deben venir capitalizadas)
-  if ($line[13] !== ucwords(strtolower($line[13]))) {
-    $line[13] = ucwords(strtolower($line[13]));
-  }
-  
-  // Limpiar lugar llegada (la ciudad y pais deben venir capitalizadas)
-  if ($line[14] !== ucwords(strtolower($line[14]))) {
-    $line[14] = ucwords(strtolower($line[14]));
-  }
-
-  return $line;
+    // Limpiar lugar origen y llegada
+    $line[15] = ucwords(strtolower(preg_replace('/[^a-zA-Z ]/', '', $line[15])));
+    $line[16] = ucwords(strtolower(preg_replace('/[^a-zA-Z ]/', '', $line[16])));
+    
+    return $line;
 }
 ?>

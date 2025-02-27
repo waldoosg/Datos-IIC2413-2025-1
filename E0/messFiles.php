@@ -1,109 +1,163 @@
 <?php
 function dirtyCsvLineFromUsuariosCsv($line) {    
     // Ensuciar número de teléfono (alterar formato o valores)
-    if (rand(0, 1)) {
-        $line[6] = "+" . rand(50, 99) . " " . rand(1000, 9999) . " " . rand(1000, 9999);
+    if (rand(0, 99) < 20) {
+        $line[6] = str_replace(" ", "-", $line[6]);
     }
     
     // Ensuciar correo (agregar espacios, caracteres inválidos o quitar '@')
-    if (rand(0, 1)) {
-        $line[4] = str_replace("@", "", $line[4]) . " example";
+    if (rand(0, 99) < 20) {
+        if (rand(0, 99) < 50) {
+            $line[3] = str_replace("@", "", $line[3]);
+        } else {
+            $line[3] = str_replace("@", "@@", $line[3]);
+        }
+    }
+
+    // Ensuciar dominio del correo (reemplazar ".xxx" con algo específico)
+    if (rand(0, 99) < 20) {
+        $emailParts = explode("@", $line[3]);
+        if (count($emailParts) == 2) {
+            $domainParts = explode(".", $emailParts[1]);
+            if (count($domainParts) > 1) {
+                $domainParts[count($domainParts) - 1] = "ceele";
+                $emailParts[1] = implode(".", $domainParts);
+                $line[3] = implode("@", $emailParts);
+            }
+        }
     }
     
     // Ensuciar fecha (cambiar formato o agregar letras)
-    if (rand(0, 1)) {
-        $line[8] = "fecha-" . rand(1, 12) . "-" . rand(2020, 2030);
+    if (rand(0, 99) < 20) {
+        $line[9] = str_replace("-", "/", $line[9]);
     }
     
     // Ensuciar monto (hacerlo negativo)
-    if (rand(0, 1)) {
-        $line[9] = -abs($line[9]);
+    if (rand(0, 99) < 20) {
+        $line[10] = (int)$line[10];
+        $line[10] = -abs($line[10]);
+        $line[10] = (string)$line[10];
     }
     
     // Ensuciar RUN (agregar puntos o valores fuera del rango)
-    if (rand(0, 1)) {
-        $line[1] = number_format(rand(10000, 35000000), 0, '', '.');
+    if (rand(0, 99) < 20) {
+        $line[1] = addDotsToRut($line[1]);
     }
-    
+
     return $line;
+}
+function addDotsToRut($rut) {
+    $rut = preg_replace('/[^kK0-9]/', '', $rut); // Remove any non-numeric or non-K/k characters
+    if (strlen($rut) == 8) {
+        return substr($rut, 0, 2) . '.' . substr($rut, 2, 3) . '.' . substr($rut, 5, 3);
+    } elseif (strlen($rut) == 7) {
+        return substr($rut, 0, 1) . '.' . substr($rut, 1, 3) . '.' . substr($rut, 4, 3);
+    }
+    return $rut; // Return the original RUT if it doesn't match expected lengths
 }
 
 function dirtyCsvLineFromEmpleadosCsv($line) {    
-    // Ensuciar número de teléfono
-    if (rand(0, 1)) {
-        $line[5] = "56 " . rand(1, 9) . " " . rand(1000, 9999) . " " . rand(1000, 9999);
+    // Ensuciar número de teléfono (alterar formato o valores)
+    if (rand(0, 99) < 20) {
+        $line[6] = str_replace(" ", "-", $line[6]);
     }
     
-    // Ensuciar correo
-    if (rand(0, 1)) {
-        $line[3] = "correo_sin_arroba.com";
+    // Ensuciar correo (agregar espacios, caracteres inválidos o quitar '@')
+    if (rand(0, 99) < 20) {
+        if (rand(0, 99) < 50) {
+            $line[3] = str_replace("@", "", $line[3]);
+        } else {
+            $line[3] = str_replace("@", "@@", $line[3]);
+        }
+    }
+
+    // Ensuciar dominio del correo (reemplazar ".xxx" con algo específico)
+    if (rand(0, 99) < 20) {
+        $emailParts = explode("@", $line[3]);
+        if (count($emailParts) == 2) {
+            $domainParts = explode(".", $emailParts[1]);
+            if (count($domainParts) > 1) {
+                $domainParts[count($domainParts) - 1] = "ceele";
+                $emailParts[1] = implode(".", $domainParts);
+                $line[3] = implode("@", $emailParts);
+            }
+        }
     }
     
-    // Ensuciar fecha
-    if (rand(0, 1)) {
-        $line[9] = rand(1, 31) . "/" . rand(1, 12) . "/" . rand(2020, 2030);
+    // Ensuciar fecha (cambiar formato o agregar letras)
+    if (rand(0, 99) < 20) {
+        $line[10] = str_replace("-", "/", $line[10]);
     }
     
     // Ensuciar monto (hacerlo negativo)
-    if (rand(0, 1)) {
-        $line[10] = -abs($line[10]);
+    if (rand(0, 99) < 20) {
+        $line[11] = (int)$line[11];
+        $line[11] = -abs($line[11]);
+        $line[11] = (string)$line[11];
     }
     
-    // Ensuciar RUN
-    if (rand(0, 1)) {
-        $line[1] = "99.999.999-K";
+    // Ensuciar RUN (agregar puntos o valores fuera del rango)
+    if (rand(0, 99) < 20) {
+        $line[1] = addDotsToRut($line[1]);
     }
-    
+
     // Ensuciar lugares (convertir a minúsculas o agregar caracteres raros)
-    if (rand(0, 1)) {
-        $line[13] = strtolower($line[13]) . "#";
+    if (rand(0, 99) < 20) {
+        $line[15] = strtolower($line[15]) . "#";
     }
-    if (rand(0, 1)) {
-        $line[14] = strtoupper($line[14]) . "!!!";
+    if (rand(0, 99) < 20) {
+        $line[16] = strtoupper($line[16]) . "!!!";
     }
-    
     return $line;
 }
 
 $prefix = '../E0/CSV/';
 $dir = new DirectoryIterator($prefix);
 
-foreach ($dir as $fileinfo) {
-    if ($fileinfo->isFile() && $fileinfo->getFilename() == 'EmpleadosRescatados.csv') {
-        $filepath = $fileinfo->getPathname();
-        $csvfile = fopen($filepath, "r") or die("Unable to open file!");
-        $dirtyFilepath = $prefix . 'EmpleadosRescatados_dirty.csv';
-        $dirtyCsvfile = fopen($dirtyFilepath, "w") or die("Unable to open file!");
-        # Skip header
-        $header = fgetcsv($csvfile);
-        fputcsv($dirtyCsvfile, $header);
+$archivos = [
+    'EmpleadosRescatados_cleanPhone.csv' => 'EmpleadosRescatados_dirty.csv',
+    'UsuariosRescatados_cleanPhone.csv' => 'UsuariosRescatados_dirty.csv'
+];
 
-        while (($line = fgetcsv($csvfile)) !== FALSE) {
-            $dirtyLine = dirtyCsvLineFromEmpleadosCsv($line);
-            fputcsv($dirtyCsvfile, $dirtyLine);
+foreach ($archivos as $cleanFile => $dirtyFile) {
+    foreach ($dir as $fileinfo) {
+        if ($fileinfo->isFile() && $fileinfo->getFilename() == $cleanFile) {
+            $filepath = $fileinfo->getPathname();
+            $csvfile = fopen($filepath, "r") or die("Unable to open file!");
+            $dirtyFilepath = $prefix . $dirtyFile;
+            $dirtyCsvfile = fopen($dirtyFilepath, "w") or die("Unable to open file!");
+
+            // Contadores
+            $lineas_ensuciadas = 0;
+            $lineas_sin_cambios = 0;
+
+            // Saltar encabezado
+            $header = fgetcsv($csvfile);
+            fputcsv($dirtyCsvfile, $header);
+
+            while (($line = fgetcsv($csvfile)) !== FALSE) {
+                $dirtyLine = ($cleanFile == 'EmpleadosRescatados_cleanPhone.csv') 
+                    ? dirtyCsvLineFromEmpleadosCsv($line)
+                    : dirtyCsvLineFromUsuariosCsv($line);
+
+                fputcsv($dirtyCsvfile, $dirtyLine);
+
+                if ($line != $dirtyLine) {
+                    $lineas_ensuciadas++;
+                } else {
+                    $lineas_sin_cambios++;
+                }
+            }
+
+            fclose($csvfile);
+            fclose($dirtyCsvfile);
+
+            // Imprimir resumen
+            echo "Archivo: $dirtyFile\n";
+            echo "Líneas ensuciadas: $lineas_ensuciadas\n";
+            echo "Líneas sin cambios: $lineas_sin_cambios\n";
+            echo "------------------------\n";
         }
-
-        fclose($csvfile);
-        fclose($dirtyCsvfile);
-    }
-}
-foreach ($dir as $fileinfo) {
-    if ($fileinfo->isFile() && $fileinfo->getFilename() == 'UsuariosRescatados.csv') {
-        $filepath = $fileinfo->getPathname();
-        $csvfile = fopen($filepath, "r") or die("Unable to open file!");
-        $dirtyFilepath = $prefix . 'UsuariosRescatados_dirty.csv';
-        $dirtyCsvfile = fopen($dirtyFilepath, "w") or die("Unable to open file!");
-        # Skip header
-        $header = fgetcsv($csvfile);
-        fputcsv($dirtyCsvfile, $header);
-
-        while (($line = fgetcsv($csvfile)) !== FALSE) {
-            $dirtyLine = dirtyCsvLineFromUsuariosCsv($line);
-            fputcsv($dirtyCsvfile, $dirtyLine);
-        }
-
-        fclose($csvfile);
-        fclose($dirtyCsvfile);
     }
 }
 ?>
