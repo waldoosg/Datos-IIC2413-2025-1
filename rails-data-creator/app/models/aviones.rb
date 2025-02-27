@@ -1,2 +1,2 @@
-class Aviones < Transporte
+class Aviones < ApplicationRecord
 end

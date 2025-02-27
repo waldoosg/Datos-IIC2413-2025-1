@@ -1,2 +1,2 @@
-class Airbnb < Hospedaje
+class Airbnb < ApplicationRecord
 end

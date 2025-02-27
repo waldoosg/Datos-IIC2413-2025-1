@@ -5,7 +5,7 @@ class CreateSeguros < ActiveRecord::Migration[8.0]
       t.float :valor
       t.text :clausula
       t.string :empresa
-      t.references :usuario, null: false, foreign_key: { to_table: :personas }
+      t.references :usuario, null: false, foreign_key: { to_table: :usuarios }
       t.references :reserva, null: false, foreign_key: { to_table: :reservas }
 
       t.timestamps

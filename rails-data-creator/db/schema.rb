@@ -23,40 +23,92 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_18_204008) do
   end
 
   create_table "airbnbs", force: :cascade do |t|
+    t.string "nombre_hospedaje"
+    t.string "ubicacion"
+    t.float "precio_noche"
+    t.float "estrellas"
+    t.text "comodidades", default: [], array: true
+    t.boolean "disponibilidad"
     t.string "nombre_anfitrion"
     t.string "contacto_anfitrion"
     t.text "descripcion"
+    t.date "fecha_checkin"
+    t.date "fecha_checkout"
     t.integer "piezas"
     t.integer "camas"
     t.integer "banos"
+    t.bigint "hospedajes_id"
+    t.bigint "reservas_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["hospedajes_id"], name: "index_airbnbs_on_hospedajes_id"
+    t.index ["reservas_id"], name: "index_airbnbs_on_reservas_id"
   end
 
   create_table "aviones", force: :cascade do |t|
-    t.string "escalas", default: [], array: true
+    t.bigint "empleado_id", null: false
+    t.integer "numero_viaje"
+    t.string "lugar_origen"
+    t.string "lugar_llegada"
+    t.integer "capacidad"
+    t.integer "tiempo_estimado"
+    t.float "precio_asiento"
+    t.string "empresa"
+    t.date "fecha_salida"
+    t.date "fecha_llegada"
     t.string "clase"
+    t.string "escalas", default: [], array: true
+    t.bigint "transportes_id"
+    t.bigint "reservas_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["empleado_id"], name: "index_aviones_on_empleado_id"
+    t.index ["reservas_id"], name: "index_aviones_on_reservas_id"
+    t.index ["transportes_id"], name: "index_aviones_on_transportes_id"
   end
 
   create_table "buses", force: :cascade do |t|
+    t.bigint "empleado_id", null: false
+    t.integer "numero_viaje"
+    t.string "lugar_origen"
+    t.string "lugar_llegada"
+    t.integer "capacidad"
+    t.integer "tiempo_estimado"
+    t.float "precio_asiento"
+    t.string "empresa"
+    t.date "fecha_salida"
+    t.date "fecha_llegada"
     t.string "tipo"
     t.text "comodidades", default: [], array: true
+    t.bigint "transportes_id"
+    t.bigint "reservas_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["empleado_id"], name: "index_buses_on_empleado_id"
+    t.index ["reservas_id"], name: "index_buses_on_reservas_id"
+    t.index ["transportes_id"], name: "index_buses_on_transportes_id"
   end
 
   create_table "empleados", force: :cascade do |t|
+    t.string "nombre"
+    t.integer "run"
+    t.integer "dv"
+    t.string "correo"
+    t.string "contrasena"
+    t.string "username"
+    t.string "telefono_contacto"
     t.string "jornada"
     t.string "isapre"
     t.string "contrato"
+    t.bigint "personas_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["personas_id"], name: "index_empleados_on_personas_id"
   end
 
   create_table "habitaciones", force: :cascade do |t|
     t.integer "numero_habitacion"
+    t.string "tipo", default: "Sencilla", null: false
     t.bigint "hotel_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -64,13 +116,14 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_18_204008) do
   end
 
   create_table "hospedajes", force: :cascade do |t|
-    t.bigint "reserva_id", null: false
     t.string "nombre_hospedaje"
     t.string "ubicacion"
     t.float "precio_noche"
     t.float "estrellas"
     t.text "comodidades"
     t.boolean "disponibilidad"
+    t.date "fecha_checkin"
+    t.date "fecha_checkout"
     t.string "politicas", default: [], array: true
     t.string "nombre_anfitrion"
     t.string "contacto_anfitrion"
@@ -78,19 +131,31 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_18_204008) do
     t.integer "piezas"
     t.integer "camas"
     t.integer "banos"
+    t.bigint "reservas_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["reserva_id"], name: "index_hospedajes_on_reserva_id"
+    t.index ["reservas_id"], name: "index_hospedajes_on_reservas_id"
   end
 
   create_table "hoteles", force: :cascade do |t|
+    t.string "nombre_hospedaje"
+    t.string "ubicacion"
+    t.float "precio_noche"
+    t.float "estrellas"
+    t.text "comodidades", default: [], array: true
+    t.boolean "disponibilidad"
+    t.date "fecha_checkin"
+    t.date "fecha_checkout"
     t.string "politicas", default: [], array: true
+    t.bigint "hospedajes_id"
+    t.bigint "reservas_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["hospedajes_id"], name: "index_hoteles_on_hospedajes_id"
+    t.index ["reservas_id"], name: "index_hoteles_on_reservas_id"
   end
 
   create_table "panoramas", force: :cascade do |t|
-    t.bigint "reserva_id", null: false
     t.string "empresa"
     t.string "nombre_panorama"
     t.text "descripcion"
@@ -99,9 +164,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_18_204008) do
     t.float "precio_persona"
     t.integer "capacidad"
     t.text "restricciones", default: [], array: true
+    t.date "fecha_panorama"
+    t.bigint "reservas_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["reserva_id"], name: "index_panoramas_on_reserva_id"
+    t.index ["reservas_id"], name: "index_panoramas_on_reservas_id"
   end
 
   create_table "participantes", force: :cascade do |t|
@@ -118,6 +185,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_18_204008) do
     t.integer "dv"
     t.string "correo"
     t.string "contrasena"
+    t.string "username"
     t.string "telefono_contacto"
     t.integer "puntos"
     t.string "jornada"
@@ -128,13 +196,49 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_18_204008) do
   end
 
   create_table "reservas", force: :cascade do |t|
-    t.bigint "agenda_id", null: false
+    t.bigint "agenda_id"
     t.date "fecha"
     t.float "monto"
     t.integer "cantidad_personas"
+    t.string "estado_disponibilidad", default: "Disponible"
+    t.bigint "empleado_id"
+    t.integer "numero_viaje"
+    t.string "lugar_origen"
+    t.string "lugar_llegada"
+    t.integer "capacidad"
+    t.integer "tiempo_estimado"
+    t.float "precio_asiento"
+    t.string "empresa"
+    t.date "fecha_salida"
+    t.date "fecha_llegada"
+    t.string "tipo"
+    t.text "comodidades", default: [], array: true
+    t.string "escalas", default: [], array: true
+    t.string "clase"
+    t.string "paradas", default: [], array: true
+    t.string "nombre_hospedaje"
+    t.string "ubicacion"
+    t.float "precio_noche"
+    t.float "estrellas"
+    t.boolean "disponibilidad"
+    t.date "fecha_checkin"
+    t.date "fecha_checkout"
+    t.string "politicas", default: [], array: true
+    t.string "nombre_anfitrion"
+    t.string "contacto_anfitrion"
+    t.text "descripcion"
+    t.integer "piezas"
+    t.integer "camas"
+    t.integer "banos"
+    t.string "nombre_panorama"
+    t.integer "duracion"
+    t.float "precio_persona"
+    t.text "restricciones", default: [], array: true
+    t.date "fecha_panorama"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["agenda_id"], name: "index_reservas_on_agenda_id"
+    t.index ["empleado_id"], name: "index_reservas_on_empleado_id"
   end
 
   create_table "reviews", force: :cascade do |t|
@@ -162,7 +266,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_18_204008) do
   end
 
   create_table "transportes", force: :cascade do |t|
-    t.bigint "reserva_id", null: false
     t.bigint "empleado_id", null: false
     t.integer "numero_viaje"
     t.string "lugar_origen"
@@ -171,40 +274,83 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_18_204008) do
     t.integer "tiempo_estimado"
     t.float "precio_asiento"
     t.string "empresa"
+    t.date "fecha_salida"
+    t.date "fecha_llegada"
     t.string "tipo"
     t.text "comodidades", default: [], array: true
     t.string "escalas", default: [], array: true
     t.string "clase"
     t.string "paradas", default: [], array: true
+    t.bigint "reservas_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["empleado_id"], name: "index_transportes_on_empleado_id"
-    t.index ["reserva_id"], name: "index_transportes_on_reserva_id"
+    t.index ["reservas_id"], name: "index_transportes_on_reservas_id"
   end
 
   create_table "trenes", force: :cascade do |t|
+    t.bigint "empleado_id", null: false
+    t.integer "numero_viaje"
+    t.string "lugar_origen"
+    t.string "lugar_llegada"
+    t.integer "capacidad"
+    t.integer "tiempo_estimado"
+    t.float "precio_asiento"
+    t.string "empresa"
+    t.date "fecha_salida"
+    t.date "fecha_llegada"
     t.string "paradas", default: [], array: true
     t.text "comodidades", default: [], array: true
+    t.bigint "transportes_id"
+    t.bigint "reservas_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["empleado_id"], name: "index_trenes_on_empleado_id"
+    t.index ["reservas_id"], name: "index_trenes_on_reservas_id"
+    t.index ["transportes_id"], name: "index_trenes_on_transportes_id"
   end
 
   create_table "usuarios", force: :cascade do |t|
+    t.string "nombre"
+    t.integer "run"
+    t.integer "dv"
+    t.string "correo"
+    t.string "contrasena"
+    t.string "username"
+    t.string "telefono_contacto"
     t.integer "puntos"
+    t.bigint "personas_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["personas_id"], name: "index_usuarios_on_personas_id"
   end
 
-  add_foreign_key "agendas", "personas", column: "usuario_id"
-  add_foreign_key "habitaciones", "hospedajes", column: "hotel_id"
-  add_foreign_key "hospedajes", "reservas"
-  add_foreign_key "panoramas", "reservas"
+  add_foreign_key "agendas", "usuarios"
+  add_foreign_key "airbnbs", "hospedajes", column: "hospedajes_id"
+  add_foreign_key "airbnbs", "reservas", column: "reservas_id"
+  add_foreign_key "aviones", "empleados"
+  add_foreign_key "aviones", "reservas", column: "reservas_id"
+  add_foreign_key "aviones", "transportes", column: "transportes_id"
+  add_foreign_key "buses", "empleados"
+  add_foreign_key "buses", "reservas", column: "reservas_id"
+  add_foreign_key "buses", "transportes", column: "transportes_id"
+  add_foreign_key "empleados", "personas", column: "personas_id"
+  add_foreign_key "habitaciones", "hoteles", column: "hotel_id"
+  add_foreign_key "hospedajes", "reservas", column: "reservas_id"
+  add_foreign_key "hoteles", "hospedajes", column: "hospedajes_id"
+  add_foreign_key "hoteles", "reservas", column: "reservas_id"
+  add_foreign_key "panoramas", "reservas", column: "reservas_id"
   add_foreign_key "participantes", "panoramas"
   add_foreign_key "reservas", "agendas"
-  add_foreign_key "reviews", "personas", column: "usuario_id"
+  add_foreign_key "reservas", "empleados"
   add_foreign_key "reviews", "reservas"
-  add_foreign_key "seguros", "personas", column: "usuario_id"
+  add_foreign_key "reviews", "usuarios"
   add_foreign_key "seguros", "reservas"
-  add_foreign_key "transportes", "personas", column: "empleado_id"
-  add_foreign_key "transportes", "reservas"
+  add_foreign_key "seguros", "usuarios"
+  add_foreign_key "transportes", "empleados"
+  add_foreign_key "transportes", "reservas", column: "reservas_id"
+  add_foreign_key "trenes", "empleados"
+  add_foreign_key "trenes", "reservas", column: "reservas_id"
+  add_foreign_key "trenes", "transportes", column: "transportes_id"
+  add_foreign_key "usuarios", "personas", column: "personas_id"
 end

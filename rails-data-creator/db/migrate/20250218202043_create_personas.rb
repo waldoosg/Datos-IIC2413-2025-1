@@ -6,6 +6,7 @@ class CreatePersonas < ActiveRecord::Migration[8.0]
       t.integer :dv
       t.string :correo
       t.string :contrasena
+      t.string :username
       t.string :telefono_contacto
       t.integer :puntos
       t.string :jornada

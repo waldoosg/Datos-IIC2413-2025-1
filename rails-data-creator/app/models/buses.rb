@@ -1,2 +1,2 @@
-class Buses < Transporte
+class Buses < ApplicationRecord
 end

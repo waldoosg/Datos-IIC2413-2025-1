@@ -1,2 +1,2 @@
-class Trenes < Transporte
+class Trenes < ApplicationRecord
 end

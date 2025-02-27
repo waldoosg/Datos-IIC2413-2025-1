@@ -1,3 +1,3 @@
-class Empleado < Persona
-  has_many :trasnporte, foreign_key: :id_empleado
+class Empleado < ApplicationRecord
+  has_many :transporte, foreign_key: :empleado_id
 end

@@ -1,3 +1,3 @@
 class Transporte < ApplicationRecord
-  has_many :reserva
+  belongs_to :empleado
 end
