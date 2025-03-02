@@ -2,7 +2,7 @@
 function cleanCsvLineFromUsuariosCsv($line) {
     // Limpiar número de teléfono
     $line[6] = str_replace("-", " ", $line[6]);
-    if (!preg_match('/^\+569 \d{4} \d{4}$/', $line[6])) {
+    if (!preg_match('/^\+56 \d \d{4} \d{4}$/', $line[6])) {
         $line[6] = null;
     }
 
@@ -36,7 +36,7 @@ function cleanCsvLineFromUsuariosCsv($line) {
 function cleanCsvLineFromEmpleadosCsv($line) {
     // Limpiar número de teléfono
     $line[6] = str_replace("-", " ", $line[6]);
-    if (!preg_match('/^56 \d \d{4} \d{4}$/', $line[6])) {
+    if (!preg_match('/^\+56 \d \d{4} \d{4}$/', $line[6])) {
         $line[6] = null;
     }
 
@@ -51,7 +51,6 @@ function cleanCsvLineFromEmpleadosCsv($line) {
 
     // Limpiar fecha
     $line[10] = str_replace("/", "-", $line[10]);
-    print($line[10] . "\n");
     if (!preg_match('/^\d{2}-\d{2}-\d{4}$/', $line[10])) {
         $line[10] = null;
     }
